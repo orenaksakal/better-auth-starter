@@ -1,18 +1,18 @@
 import { betterAuth } from "better-auth";
-import { openAPI } from "better-auth/plugins";
+import { openAPI, jwt } from "better-auth/plugins";
 import { Pool } from "pg";
 import { Redis } from "ioredis"
 
 const redis = new Redis(`${process.env.REDIS_URL}?family=0`)
-   .on("error", (err) => {
-     console.error("Redis connection error:", err)
-   })
-   .on("connect", () => {
-     console.log("Redis connected")
-   })
-  .on("ready", () => {
-     console.log("Redis ready")
-   })
+	.on("error", (err) => {
+		console.error("Redis connection error:", err)
+	})
+	.on("connect", () => {
+		console.log("Redis connected")
+	})
+	.on("ready", () => {
+		console.log("Redis ready")
+	})
 
 // Check better-auth docs for more info https://www.better-auth.com/docs/
 export const auth = betterAuth({
@@ -27,7 +27,7 @@ export const auth = betterAuth({
 		},
 	},
 	// Add your plugins here
-	plugins: [openAPI()],
+	plugins: [openAPI(), jwt()],
 	// DB config
 	database: new Pool({
 		connectionString: process.env.DATABASE_URL,
